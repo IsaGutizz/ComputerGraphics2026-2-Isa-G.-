@@ -18,7 +18,7 @@ const ambientLight = new THREE.AmbientLight( 0xffffff, 0.4 );
 scene.add( ambientLight );
 
 const light = new THREE.DirectionalLight( 0xffffff, 1.2 );
-light.position.set( 5, 10, 7 );
+light.position.set( -5, 10, 7 );
 scene.add( light );
 
 //defnition of primitive shapes
@@ -86,7 +86,7 @@ shapesData.forEach( ( shapeData ) => {
 
 //CONTROLES DE CAMARA
 const controls = new OrbitControls( camera, renderer.domElement );
-camera.position.set( 0, -1.5, 9 );
+camera.position.set( 0, 1.5, 9 );
 controls.update();
 
 
@@ -114,3 +114,29 @@ function animate( time ) {
 
 
 
+function onWindowResize() {
+  // Update camera aspect ratio based on the new container bounds
+  camera.aspect = window.innerWidth / window.innerHeight;
+  
+  // Crucial: Update the projection matrix to apply changes
+  camera.updateProjectionMatrix();
+
+  // Update renderer size and pixel ratio
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+}
+
+// 3. Listen for the resize event
+window.addEventListener('resize', onWindowResize);
+
+function changeVisibilityObject() {
+    isWireframe = !isWireframe;
+    meshes.forEach( ( mesh ) => {
+        mesh.material.wireframe = isWireframe;
+
+        button.textContent = isWireframe ? 'Change Wireframe (true)' : 'Change Wireframe (false)';
+    });
+}
+
+const button = document.getElementById( 'chWirerframe' );
+button.addEventListener( 'click', changeVisibilityObject );

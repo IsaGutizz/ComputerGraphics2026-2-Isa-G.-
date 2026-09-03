@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 15, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 //const backgroundColor = new THREE.Color( 0xE8E1D1); 
 const backgroundColor = new THREE.Color( 0x0D0D0D); 
@@ -17,11 +17,27 @@ document.body.appendChild( renderer.domElement );
 const ambientLight = new THREE.AmbientLight( 0xffffff, 0.4 );
 scene.add( ambientLight );
 
-const light = new THREE.DirectionalLight( 0xffffff, 1.2 );
-light.position.set( 5, 10, 7 );
+
+const light = new THREE.DirectionalLight( 0xFFF391, 1.6 );
+light.position.set( -10, 10, 7 );
 scene.add( light );
 
-//defnition of primitive shapes
+//AÑADI OTRA LUZ PARA VER MEJOR LA ESCENA
+const light2 = new THREE.DirectionalLight( 0xffffff, 1 );
+light2.position.set( 15, -3, -7 );
+scene.add( light2 );
+
+//EL ANILLO FUERA DEL MESH SHAPES DATA PARA AÑADIRLE LA ROTACION INDIVIDUAL
+const ring= new THREE.RingGeometry( 2.5, 2, 32);
+const material = new THREE.MeshBasicMaterial( { color: 0x7A8385 } );
+const anilloJupiter= new THREE.Mesh( ring, material );
+
+anilloJupiter.rotation.x = Math.PI / 2;
+anilloJupiter.position.x = 27;
+
+scene.add(anilloJupiter);
+
+//definiendo las esferas de planetas
 const shapesData = [
     {
         name: 'Sol',
@@ -32,81 +48,59 @@ const shapesData = [
     },
     {
         name: 'Mercurio',
-        geometry: new THREE.SphereGeometry( 0.075, 32, 32 ),    
-        color: 0x445DE9,
-        posX: 10,    
+        geometry: new THREE.SphereGeometry( 0.15, 32, 32 ),    
+        color: 0x8C8C8C,
+        posX: 15,    
     },
     {
         name: 'Venus',
-        geometry: new THREE.SphereGeometry( 0.0435, 32, 32 ),    
-        color: 0x445DE9,
-        posX: 11, 
+        geometry: new THREE.SphereGeometry( 0.35, 32, 32 ),    
+        color: 0xE6C27A,
+        posX: 17, 
     }, 
     {
         name: 'Tierra',
-        geometry: new THREE.SphereGeometry( 0.0458, 32, 32 ),    
-        color: 0x445DE9,
-        posX: 12, 
-    },
-    {
-        name: 'Marte',
-        geometry: new THREE.SphereGeometry( 0.0244, 32, 32 ),    
-        color: 0x445DE9,
-        posX: 13, 
-    },
-    {
-        name: 'Jupiter',
-        geometry: new THREE.SphereGeometry( 0.5026, 32, 32 ),    
-        color: 0x445DE9,
-        posX:  15, 
-    },
-    {
-        name: 'Saturno',
-        geometry: new THREE.SphereGeometry( 0.4185, 32, 32 ),    
-        color: 0x445DE9,
-        posX: 17, 
-    },
-    {
-        name: 'Saturno ring',
-        geometry: new THREE.RingGeometry( 0.6, 1, 32 ),    
-        color: 0x445DE9,
-        posX: 17, 
-    },
-    {
-        name: 'Urano',
-        geometry: new THREE.SphereGeometry( 0.1823, 32, 32 ),    
-        color: 0x445DE9,
+        geometry: new THREE.SphereGeometry( 0.38, 32, 32 ),    
+        color: 0x2F6DB0,
         posX: 19, 
     },
     {
+        name: 'Marte',
+        geometry: new THREE.SphereGeometry( 0.22, 32, 32 ),    
+        color: 0xC1440E,
+        posX: 22, 
+    },
+    {
+        name: 'Jupiter',
+        geometry: new THREE.SphereGeometry( 1.5, 32, 32 ),    
+        color: 0xC88B5A,
+        posX:  27, 
+    },
+    {
+        name: 'Saturno',
+        geometry: new THREE.SphereGeometry( 1.3, 32, 32 ),    
+        color: 0xD8C28A,
+        posX: 35, 
+    },
+    {
+        name: 'Urano',
+        geometry: new THREE.SphereGeometry( 0.75, 32, 32 ),    
+        color: 0x7DE3E3,
+        posX: 40, 
+    },
+    {
         name: 'Neptuno',
-        geometry: new THREE.SphereGeometry( 0.1770, 32, 32 ),    
-        color: 0x445DE9,
-        posX: 21, 
+        geometry: new THREE.SphereGeometry( 0.73, 32, 32 ),    
+        color: 0x4169E1,
+        posX: 45, 
     },
 ];
 
-//ARREGLO DE OBJETOS
 const meshes =[];
-let isWireframe = false;
-
-const wireframeButton = document.getElementById('wireframeButton');
-
-
-wireframeButton.addEventListener('click', () => {
-    isWireframe = !isWireframe;
-    
-    meshes.forEach( ( mesh ) => {
-        mesh.material.wireframe = isWireframe;
-    });
-
-    wireframeButton.textContent = isWireframe ? 'Desactivar Wireframe' : 'Activar Wireframe';
-});
- 
-
+       
 //GENERAR MESHES PARA CADA SHAPE Y AGREGARLOS A LA ESCENA
 shapesData.forEach( ( shapeData ) => {
-    const material = new THREE.MeshStandardMaterial( { color: shapeData.color, wireframe: isWireframe, roughness: 0.3, metalness: 0.2} );
+    const material = new THREE.MeshStandardMaterial( { color: shapeData.color, wireframe: false, roughness: 2, metalness: 0.1} );
     const mesh = new THREE.Mesh( shapeData.geometry, material );
     mesh.position.x = shapeData.posX;
     scene.add( mesh );
@@ -116,23 +110,65 @@ shapesData.forEach( ( shapeData ) => {
 
 //CONTROLES DE CAMARA
 const controls = new OrbitControls( camera, renderer.domElement );
-camera.position.set( 100, 0, 20 );
+camera.position.set( 90,20,50 );
 controls.update();
 
 
-
 function animate( time ) {
-  renderer.render( scene, camera );
   controls.update();
 
-  meshes.forEach( ( mesh ) => {
-    const speed = 0.001;   
+  const speed = 0.0002;
+  
+meshes.forEach( ( mesh,index ) => {
     
-    mesh.rotation.x = time * speed;
-    mesh.rotation.y = time * speed;
+    const shapeData = shapesData[index];
+
+    if (shapeData.name === 'Sol') {
+            return;
+        }
+
+        const angle = time * speed * (50 / shapeData.posX);
+        const distance = shapeData.posX;
+
+        mesh.position.x = Math.cos(angle) * distance;
+        mesh.position.z = Math.sin(angle) * distance;
+
+    
+    mesh.rotation.y += 0.01;
+    
   });
 
+  const angle = time * speed * (50 / 27);
+
+        anilloJupiter.position.x = Math.cos(angle) * 27;
+        anilloJupiter.position.z = Math.sin(angle) * 27;
+
+    
+
+ renderer.render( scene, camera );
 }
 
+function onWindowResize() {
+ 
+  camera.aspect = window.innerWidth / window.innerHeight;
+  
+  camera.updateProjectionMatrix();
 
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+}
+
+window.addEventListener('resize', onWindowResize);
+
+function changeVisibilityObject() {
+    isWireframe = !isWireframe;
+    meshes.forEach( ( mesh ) => {
+        mesh.material.wireframe = isWireframe;
+
+        button.textContent = isWireframe ? 'Change Wireframe (true)' : 'Change Wireframe (false)';
+    });
+}
+
+const button = document.getElementById( 'chWirerframe' );
+button.addEventListener( 'click', changeVisibilityObject );
 
