@@ -7,19 +7,19 @@
     <title>Computer Graphics 2026</title>
     <!-- Link to the CSS file -->
     <link rel="stylesheet" type="text/css" href="../../src/css/style.css">
-    <!-- Link to the JavaScript file -->
-    <script src="../../src/js/mainClass3.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../src/css/styleClass3.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-        <script type="importmap">
-{
-    "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+        }
     }
-}
-</script>
+    </script>
 </head>
 
 <body>
@@ -49,7 +49,11 @@
     </nav>
 
     <!-- create of content -->
-     <script type="module" src="../cube/mainCube.js"></script>
+     <button id="wireframeButton">Activar Wireframe</button>
+
+
+     <script type="module" src="../../src/js/mainCube.js"></script>
+     
 
     <footer class="fixed-bottom text-center text-white bg-dark text-lg-start ">
         <!-- Copyright -->

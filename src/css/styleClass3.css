@@ -1,0 +1,27 @@
+#wireframeButton {
+    position: fixed;
+    top: 120px;
+    left: 30px;
+    
+    
+    padding: 12px 20px;
+
+    background-color: #44B2E9;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+#wireframeButton:hover {
+    background-color: #1684BB;
+    transform: scale(1.05);
+}
