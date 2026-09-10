@@ -5,8 +5,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0f172a); // Noche azulada
 
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-camera.position.set(-20, 10, 25);
+const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 70);
+camera.position.set(0, 10, 20);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -44,8 +44,7 @@ const shapesData = [
     {
         name: 'Soporte1',
         geometry: new THREE.CylinderGeometry( 0.3, 0.3, 10, 32 ),
-        color: 0x44B2E9,
-        
+        color: 0x5E40C9,   
         posX: 2.5,
         posY: 3.5,
         posZ: -2,
@@ -54,7 +53,7 @@ const shapesData = [
     {
         name: 'Soporte2',
         geometry: new THREE.CylinderGeometry( 0.3, 0.3, 10, 32 ),
-        color: 0x44B2E9,
+        color: 0x5E40C9,
         
         posX: -2.5,
         posY: 3.5,
@@ -64,7 +63,7 @@ const shapesData = [
     {
         name: 'Soporte3',
         geometry: new THREE.CylinderGeometry( 0.3, 0.3, 10, 32 ),
-        color: 0x44B2E9,
+        color: 0x5E40C9,
         
         posX: 2.5,
         posY: 3.5,
@@ -74,7 +73,7 @@ const shapesData = [
     {
         name: 'Soporte4',
         geometry: new THREE.CylinderGeometry( 0.3, 0.3, 10, 32 ),
-        color: 0x44B2E9,
+        color: 0x5E40C9,
         
         posX: -2.5,
         posY: 3.5,
@@ -84,7 +83,7 @@ const shapesData = [
     {
         name: 'SoporteCentral',
         geometry: new THREE.CylinderGeometry( 0.4, 0.4, 5.1, 32 ),
-        color: 0x94a3b8,
+        color: 0x856DDE,
         
         posX: 0,
         posY: 8,
@@ -117,18 +116,18 @@ rueda.position.y = 8;
 scene.add(rueda);
 
 const aroForma = new THREE.TorusGeometry(radioRueda, 0.2, 12, 64);
-const aroMaterial = new THREE.MeshStandardMaterial({color: 0x94a3b8});
+const aroMaterial = new THREE.MeshStandardMaterial({color: 0x808FA8, roughness: 0.3, metalness: 0.5});
 const aro1 = new THREE.Mesh(aroForma, aroMaterial);
 const aro2 = new THREE.Mesh(aroForma, aroMaterial);
 
-aro1.position.z = -1.5;
-aro2.position.z = 1.5;
+aro1.position.z = -1.4;
+aro2.position.z = 1.4;
 
 rueda.add(aro1);
 rueda.add(aro2);
 
 const radioForma = new THREE.CylinderGeometry(0.08, 0.08, radioRueda * 2, 8);
-const radioMaterial = new THREE.MeshStandardMaterial({color: 0xcbd5e1});
+const radioMaterial = new THREE.MeshStandardMaterial({color: 0x808FA8, roughness: 0.3, metalness: 0.5});
 
 for (let i = 0; i < numCabinas; i++) {
 const radio = new THREE.Mesh(radioForma, radioMaterial);
@@ -137,8 +136,8 @@ const radio2 = new THREE.Mesh(radioForma, radioMaterial);
 radio.rotation.z = (i * Math.PI * 2) / numCabinas;
 radio2.rotation.z = (i * Math.PI * 2) / numCabinas;
 
-radio.position.z = -1.5;
-radio2.position.z = 1.5;
+radio.position.z = -1.4;
+radio2.position.z = 1.4;
 rueda.add(radio);
 rueda.add(radio2);
 }
@@ -149,20 +148,19 @@ for (let i = 0; i < numCabinas; i++) {
     const cabina = new THREE.Group();
 
     cabina.position.x = Math.cos(angulo) * radioRueda;
-    cabina.position.y = Math.sin(angulo) * radioRueda;
+    cabina.position.y = (Math.sin(angulo) * radioRueda);
 
-    const cestaForma= new THREE.BoxGeometry(2, 2, 2);
-    const cestaMaterial = new THREE.MeshStandardMaterial({color: 0xf59e0b});
+    const cestaForma= new THREE.BoxGeometry(1.5, 1, 2);
+    const cestaMaterial = new THREE.MeshStandardMaterial({color: 0xFFE975});
 
-    const techoForma = new THREE.ConeGeometry(1.6, 1.3, 4);
-    const techoMaterial = new THREE.MeshStandardMaterial({color: 0xfbbf24});
+    const techoForma = new THREE.ConeGeometry(1.5, 1.1, 4);
+    const techoMaterial = new THREE.MeshStandardMaterial({color: 0xA28DF2});
     const techo = new THREE.Mesh(techoForma, techoMaterial);
-    techo.position.y = 1.5;
+    techo.position.y = 1;
     techo.rotation.y = Math.PI / 4;
 
-    const cesta = new THREE.Mesh(cestaForma, cestaMaterial);
 
-    cesta.castShadow = true;
+    const cesta = new THREE.Mesh(cestaForma, cestaMaterial);
 
     cabina.add(cesta);
     cabina.add(techo);
@@ -172,13 +170,15 @@ for (let i = 0; i < numCabinas; i++) {
 // Loop de Animación
 let velocidadGiro = 0.01;
 
-const axesHelper = new THREE.AxesHelper( 5 );
-scene.add( axesHelper );
 
 function animate() {
     requestAnimationFrame(animate);
 
     // Aqui colocar el codigo de Rotación de la rueda
+    rueda.rotation.z += velocidadGiro;
+    cabinas.forEach((cabina) => {
+    cabina.rotation.z = -rueda.rotation.z;
+});
     controls.update();
     renderer.render(scene, camera);
 }
